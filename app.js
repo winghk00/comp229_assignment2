@@ -16,7 +16,8 @@ async function main() {
 }
 
 var indexRouter = require('./routes/index');
-var products = require('./routes/products');
+//var products = require('./routes/products');
+const productController = require('./controllers/products.controller');
 
 var app = express();
 
@@ -33,7 +34,27 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/products', products);
+//app.use('/products', products);
+// Get all products
+app.get('/api/products', productController.getAllProducts);
+
+// Get product by ID
+app.get('/api/products/:id', productController.getProductById);
+
+// Add new product
+app.post('/api/products', productController.addProduct);
+
+// Update product by ID
+app.put('/api/products/:id', productController.updateProduct);
+
+// Delete product by ID
+app.delete('/api/products/:id', productController.deleteProduct);
+
+// Delete all products
+app.delete('/api/products', productController.deleteAllProducts);
+
+// Find products by name
+app.get('/api/products', productController.findProductsByName);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
