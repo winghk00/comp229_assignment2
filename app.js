@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-
+const bodyParser = require("body-parser") 
 const mongoose = require('mongoose');
 
 main().catch(err => console.log(err));
@@ -17,9 +17,10 @@ async function main() {
 
 var indexRouter = require('./routes/index');
 //var products = require('./routes/products');
-const productController = require('./controllers/products.controller');
+var productController = require('./controllers/products.controller');
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,7 +30,7 @@ app.listen(8080, () => console.log('Server is running on port 8080...'));
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
