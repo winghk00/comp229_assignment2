@@ -1,13 +1,23 @@
 const Product = require('../models/product.model');
 
-
 // Get all products
 exports.getAllProducts = async (req, res) => {
-    try {
-      const products = await Product.find();
-      res.json(products);
-    } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
+  const keyword = req.query.name;
+    if (keyword == null){
+      try {
+        const products = await Product.find();
+        res.json(products);
+      } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    } else {
+      try {
+        //const keyword = req.query.name;
+        const products = await Product.find({ name: { $regex: keyword, $options: 'i' } });
+        res.json(products);
+      } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+      }
     }
   };
   
@@ -20,6 +30,7 @@ exports.getAllProducts = async (req, res) => {
       }
       res.json(product);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error: 'Internal server error' });
     }
   };
@@ -75,13 +86,3 @@ exports.getAllProducts = async (req, res) => {
     }
   };
   
-  // Find products by name
-  exports.findProductsByName = async (req, res) => {
-    try {
-      const keyword = req.query.name;
-      const products = await Product.find({ name: { $regex: keyword, $options: 'i' } });
-      res.json(products);
-    } catch (error) {
-      res.status(500).json({ error: 'Internal server error' });
-    }
-};

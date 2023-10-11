@@ -11,16 +11,13 @@ main().catch(err => console.log(err));
 
 async function main() {
   await mongoose.connect('mongodb://127.0.0.1:27017/Marketplace');
-
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 
 var indexRouter = require('./routes/index');
-//var products = require('./routes/products');
+var products = require('./routes/products');
 var productController = require('./controllers/products.controller');
 
 var app = express();
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,7 +32,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-//app.use('/products', products);
+
+// Routes
 // Get all products
 app.get('/api/products', productController.getAllProducts);
 
@@ -53,9 +51,6 @@ app.delete('/api/products/:id', productController.deleteProduct);
 
 // Delete all products
 app.delete('/api/products', productController.deleteAllProducts);
-
-// Find products by name
-app.get('/api/products', productController.findProductsByName);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
